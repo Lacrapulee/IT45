@@ -1,0 +1,10 @@
+model exact/modele.mod;
+#Mettre ses instances exemple :
+data instances/instance_1_n10_m2.dat;
+
+option solver gurobi;
+# ou avec un autre solver moins performant : option solver glpk;
+solve;
+
+display Cmax;
+display x;
