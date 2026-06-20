@@ -107,7 +107,7 @@ Face à la nature NP-difficile du problème, le solveur open-source GLPK a fait 
 * **Limite Temporelle (Timeout) :** Évalué à $10$ secondes par instance.
 * **Limite Mémoire (RAM) :** Sursaturation bloquée à **2 Go maximum** (`resource.RLIMIT_AS`) pour éviter les plantages par débordement d'arbre de recherche.
 
-### Tableau Récapitulatif des Résultats (Mesures sous Windows/Linux)
+### Tableau Récapitulatif des Résultats (Mesures sous Linux)
 
 | Instance | Exact (Gurobi) | GLPK | AG (Makespan) | T_Gurobi (s) | T_GLPK (s) | T_AG (s) | Gap (%) |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -121,17 +121,27 @@ Face à la nature NP-difficile du problème, le solveur open-source GLPK a fait 
 | `n200_m10` | 2385.0 | **Timeout** | 2500.0 | 10.1471 | > 10.0 | 7.3444 | 4.82 |
 | `n500_m10` | 6100.0 | **Timeout** | 6360.0 | 24.8094 | > 10.0 | 32.7141 | 4.26 |
 
+### Tableau Récapitulatif des Résultats (Mesures sous Windows)
+
+| Instance | Exact (Grb) | GLPK | AG | T_Gurobi (s) | T_GLPK (s) | T_AG (s) | Gap (%) |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| `n10_m2` | 655.0 | 655.0 | 655.0 | 0.0778 | 0.1797 | 0.3669 | 0.00 |
+| `n10_m3` | 440.0 | 440.0 | 440.0 | 0.0846 | 0.2277 | 0.3776 | 0.00 |
+| `n15_m2` | 820.0 | 820.0 | 820.0 | 0.0766 | 0.1604 | 0.3845 | 0.00 |
+| `n30_m2` | 1965.0 | 1965.0 | 1965.0 | 0.0786 | 11.0043 | 0.4849 | 0.00 |
+| `n45_m4` | 1405.0 | **Timeout** | 1415.0 | 0.0844 | > 10.0 | 0.5607 | 0.71 |
+| `n45_m6` | 935.0 | 935.0 | 945.0 | 0.1292 | 0.7974 | 0.5434 | 1.07 |
+| `n45_m10` | 565.0 | **Timeout** | 615.0 | 0.1286 | > 10.0 | 0.6582 | 8.85 |
+| `n60_m4` | 1805.0 | 1805.0 | 1815.0 | 0.1129 | 0.2725 | 0.7548 | 0.55 |
+| `n75_m4` | 2390.0 | 2390.0 | 2400.0 | 0.1956 | 0.3237 | 1.1120 | 0.42 |
+| `n75_m8` | 1195.0 | 1195.0 | 1255.0 | 0.3088 | 4.7473 | 1.2066 | 5.02 |
+| `n100_m10`| 1175.0 | **Timeout** | 1265.0 | 1.4267 | > 10.0 | 1.9641 | 7.66 |
+| `n150_m6` | 3045.0 | 3045.0 | 3080.0 | 1.3260 | 16.4989 | 3.1142 | 1.15 |
+| `n200_m10`| 2385.0 | **Timeout** | 2500.0 | 8.9514 | > 10.0 | 7.3897 | 4.82 |
+| `n300_m10`| 3610.0 | **Timeout** | 3770.0 | 15.0730 | > 10.0 | 13.5799 | 4.43 |
+| `n400_m10`| 4855.0 | **Timeout** | 5020.0 | 16.1420 | > 10.0 | 17.1089 | 3.40 |
+| `n500_m10`| 6100.0 | **Timeout** | 6360.0 | 22.5836 | > 10.0 | 32.3725 | 4.26 |
 ---
-
-Absolument ! C'est même **le meilleur endroit** pour les mettre. Un bon rapport de RO doit parler aux profs visuellement.
-
-Dans ton document final (que ce soit sur Word, LibreOffice, ou si tu convertis ton Markdown en PDF), le plus propre est d'insérer tes deux graphiques (`comparaison_temps_2d.png` et `comparaison_temps_3d.png`) directement au cœur de la **Section 5 (Analyse Critique et Discussions)**.
-
-Voici comment tu peux modifier la structure de la **Section 5** pour y intégrer tes images de manière ultra-professionnelle :
-
----
-
-### *Extrait modifié pour ton rapport :*
 
 ## 5. Analyse Critique et Discussions
 
