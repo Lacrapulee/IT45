@@ -123,27 +123,55 @@ Face à la nature NP-difficile du problème, le solveur open-source GLPK a fait 
 
 ---
 
+Absolument ! C'est même **le meilleur endroit** pour les mettre. Un bon rapport de RO doit parler aux profs visuellement.
+
+Dans ton document final (que ce soit sur Word, LibreOffice, ou si tu convertis ton Markdown en PDF), le plus propre est d'insérer tes deux graphiques (`comparaison_temps_2d.png` et `comparaison_temps_3d.png`) directement au cœur de la **Section 5 (Analyse Critique et Discussions)**.
+
+Voici comment tu peux modifier la structure de la **Section 5** pour y intégrer tes images de manière ultra-professionnelle :
+
+---
+
+### *Extrait modifié pour ton rapport :*
+
 ## 5. Analyse Critique et Discussions
 
-L'analyse combinée des données collectées met en lumière plusieurs phénomènes clés fondamentaux en Recherche Opérationnelle.
+### 5.1 Analyse Visuelle des Temps de Calcul (2D et 3D)
 
-### 5.1 Gurobi et le Miracle des Plans Coupants
+L'automatisation de nos tests via `benchmark.py` nous a permis de générer deux visualisations graphiques clés pour analyser le comportement de nos algorithmes face à la croissance des instances.
+
+```markdown
+![Comparaison des temps de calcul en 2D](comparaison_temps_2d.png)
+*Figure 1 : Évolution du temps de calcul (s) en fonction du nombre de patients (n)*
+
+```
+
+La **Figure 1** met en évidence la cassure nette entre les trois approches. On y observe la courbe orange de GLPK qui s'envole verticalement vers le plafond de notre *Timeout* dès que $n$ dépasse 30, illustrant parfaitement l'explosion combinatoire. À l'inverse, Gurobi (courbe rouge) et l'Algorithme Génétique (courbe bleue) parviennent à maintenir des temps bas, bien que l'AG montre une progression plus marquée sur les très grandes instances sous Windows.
+
+```markdown
+![Impact combinatoire en 3D](comparaison_temps_3d.png)
+*Figure 2 : Impact croisé de n (patients) et m (salles) sur le temps de calcul*
+
+```
+
+La **Figure 2** cartographie ce comportement dans un espace en trois dimensions. Ce nuage de points montre de manière flagrante que pour GLPK, le temps de calcul (axe Z) n'est pas seulement impacté par le nombre de patients ($n$), mais qu'il explose de manière exponentielle dès que le nombre de salles ($m$) augmente, car l'espace des solutions possibles est de taille $m^n$.
+
+### 5.2 Gurobi et le Miracle des Plans Coupants
 
 Sur l'instance majeure `n500_m10`, l'examen des fichiers de log internes de Gurobi révèle une efficacité surprenante : le solveur n'explore qu'**un seul et unique nœud (Nœud racine)** pour prouver mathématiquement l'optimalité à $6100$.
 
 Cette vitesse foudroyante est imputable à son moteur de pré-résolution (*Presolve*) et à l'injection de **plans coupants** polyédriques avancés (*Cover, StrongCG, RLT*). Le modèle linéaire pur de notre problème d'ordonnancement possède une relaxation continue extrêmement forte, permettant à Gurobi de couper immédiatement 99,99 % de l'arbre de décision sans recourir à un *Branch-and-Bound* lourd.
 
-### 5.2 L'Effondrement Combinatoire de GLPK
+### 5.3 L'Effondrement Combinatoire de GLPK
 
 L'introduction du solveur open-source GLPK dans le benchmark valide l'aspect théorique NP-difficile du problème. Alors que Gurobi masque la complexité grâce à ses algorithmes brevetés, **GLPK subit l'explosion combinatoire dès la taille $n=30$** (mettant déjà 10.93s sur `n30_m2`) et capitule en *Timeout* systématique à partir de $n=45$. Ce constat expérimental démontre qu'en milieu industriel, l'usage d'une méthode exacte traditionnelle dépend entièrement de la présence d'un solveur commercial haut de gamme, dont le coût des licences s'élève à plusieurs dizaines de milliers d'euros.
 
-### 5.3 Analyse du Comportement de l'Algorithme Génétique
+### 5.4 Analyse du Comportement de l'Algorithme Génétique
 
 L'AG montre une excellente précision lorsque l'espace de recherche est restreint (Gap de 0.00 % à 0.51 % pour $m=4$). Toutefois, le Gap s'élargit pour atteindre **8.85 %** sur l'instance `n45_m10`.
 
 Ce comportement met en évidence l'impact de l'explosion du nombre de salles : la taille de l'espace de recherche évoluant selon $m^n$, augmenter le nombre de machines multiplie les combinaisons et freine la convergence de l'AG pour une taille de population fixe.
 
-### 5.4 Impact de l'Environnement Système (Linux vs Windows)
+### 5.5 Impact de l'Environnement Système (Linux vs Windows)
 
 Une divergence notable a été constatée lors de la migration des scripts entre environnements :
 
