@@ -43,7 +43,7 @@ for inst in instances:
     # --- EXACT (Gurobi) ---
     start_exact = time.time()
     # Utilisation du chemin absolu vers ton python de l'environnement virtuel
-    out_exact = subprocess.check_output([PYTHON_EXE, "exact/solve_gurobi.py", f"instances/{inst}"]).decode()
+    out_exact = subprocess.check_output([PYTHON_EXE, "exact/solve_gurobi.py", f"instances/{inst}"]).decode(errors='ignore')
     time_exact = time.time() - start_exact
     
     val_exact = None
@@ -59,8 +59,8 @@ for inst in instances:
         # Sous Windows, on utilise 'timeout' de subprocess au lieu de preexec_fn pour la sécurité
         out_glpk = subprocess.check_output(
             [PYTHON_EXE, "exact/solve_glpk.py", f"instances/{inst}"],
-            timeout=15  # Timeout de sécurité de 15 secondes
-        ).decode()
+            timeout=20  # Timeout de sécurité de 20 secondes
+        ).decode(errors = "ignore")
         time_glpk = time.time() - start_glpk
         for line in out_glpk.split('\n'):
             if "Valeur optimale" in line:
@@ -68,7 +68,7 @@ for inst in instances:
     except (subprocess.TimeoutExpired, subprocess.CalledProcessError):
         print(f"  -> GLPK stoppé (Timeout Windows atteint) ")
         val_glpk = float('inf')
-        time_glpk = 40.0
+        time_glpk = 100.0
     except Exception as e:
         val_glpk = float('inf')
         time_glpk = 0.0
@@ -77,17 +77,27 @@ for inst in instances:
     # Remplacement de "./run" par "run.exe" ou "run" (selon si c'est du C++ compilé sur Windows)
     # Si c'est un script python, remplace par [PYTHON_EXE, "run.py", ...]
     executable_ag = "run.exe" if os.path.exists("run.exe") else "run"
-    out_ag = subprocess.check_output([executable_ag, f"instances/{inst}"]).decode()
+    out_ag = subprocess.check_output([PYTHON_EXE, "approche/ag.py",f"instances/{inst}"]).decode(errors="ignore")
     
     val_ag = None
     time_ag = None
     for line in out_ag.split('\n'):
+        line = line.strip()
         if "Meilleur Makespan trouvé" in line:
             val_ag = float(line.split(': ')[1])
         if "Temps de calcul" in line:
             time_ag = float(line.split(': ')[1].split()[0])
             
-    gap = ((val_ag - val_exact) / val_exact) * 100 if val_exact else 0
+    if val_ag is None : 
+        print(f" Impossible de recup le makespan pour l'ag sur {inst}")
+        print("voici ce que l'ag a affiche : ")
+        print(out_ag)
+        val_ag= float("inf")
+    if val_exact and val_ag != float("inf"):
+        gap = ((val_ag-val_exact)/val_exact)*100
+    else : 
+        gap = 0.0
+
     
     results.append({
         "instance": inst,
