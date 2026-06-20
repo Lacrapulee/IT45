@@ -156,19 +156,13 @@ Face à la nature NP-difficile du problème, le solveur open-source GLPK a fait 
 
 L'automatisation de nos tests via `benchmark.py` nous a permis de générer deux visualisations graphiques clés pour analyser le comportement de nos algorithmes face à la croissance des instances.
 
-```markdown
 ![Comparaison des temps de calcul en 2D](comparaison_temps_2d.png)
 *Figure 1 : Évolution du temps de calcul (s) en fonction du nombre de patients (n)*
 
-```
-
 La **Figure 1** met en évidence la cassure nette entre les trois approches. On y observe la courbe orange de GLPK qui s'envole verticalement vers le plafond de notre *Timeout* dès que $n$ dépasse 30, illustrant parfaitement l'explosion combinatoire. À l'inverse, Gurobi (courbe rouge) et l'Algorithme Génétique (courbe bleue) parviennent à maintenir des temps bas, bien que l'AG montre une progression plus marquée sur les très grandes instances sous Windows.
 
-```markdown
 ![Impact combinatoire en 3D](comparaison_temps_3d.png)
 *Figure 2 : Impact croisé de n (patients) et m (salles) sur le temps de calcul*
-
-```
 
 La **Figure 2** cartographie ce comportement dans un espace en trois dimensions. Ce nuage de points montre de manière flagrante que pour GLPK, le temps de calcul (axe Z) n'est pas seulement impacté par le nombre de patients ($n$), mais qu'il explose de manière exponentielle dès que le nombre de salles ($m$) augmente, car l'espace des solutions possibles est de taille $m^n$.
 
